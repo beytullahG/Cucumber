@@ -1,6 +1,6 @@
 Feature: US1007 Test for the product added to the shopping cart by the user
 
-  @wip
+
   Scenario: TC13 The correct product should be added to the cart
 
     Given the user goes to the homepage by navigating to "sauceUrl"

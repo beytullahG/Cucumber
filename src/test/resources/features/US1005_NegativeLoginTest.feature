@@ -4,8 +4,8 @@ Feature: US1005 User cannot log in with incorrect credentials
 
     Given the user goes to the Test Automation homepage
     Then clicks on the account button
-    And enters the email as "toValidEmail"
-    And enters the password as "toInvalidPassword"
+    And enters the email as "taValidEmail"
+    And enters the password as "taInvalidPassword"
     Then clicks on the signIn button
     And tests that the user cannot log into the system
     And waits for 3 seconds
@@ -15,8 +15,8 @@ Feature: US1005 User cannot log in with incorrect credentials
 
     Given the user goes to the Test Automation homepage
     Then clicks on the account button
-    And enters the email as "toInvalidEmail"
-    And enters the password as "toValidPassword"
+    And enters the email as "taInvalidEmail"
+    And enters the password as "taValidPassword"
     Then clicks on the signIn button
     And tests that the user cannot log into the system
     And waits for 3 seconds
@@ -26,8 +26,8 @@ Feature: US1005 User cannot log in with incorrect credentials
 
     Given the user goes to the Test Automation homepage
     Then clicks on the account button
-    And enters the email as "toInvalidEmail"
-    And enters the password as "toInvalidPassword"
+    And enters the email as "taInvalidEmail"
+    And enters the password as "taInvalidPassword"
     Then clicks on the signIn button
     And tests that the user cannot log into the system
     And waits for 3 seconds

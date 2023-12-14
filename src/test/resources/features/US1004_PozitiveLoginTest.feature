@@ -2,7 +2,7 @@ Feature: US1004 User logs into the system with valid credentials
 
   Scenario: TC08 User should be able to log into the system with valid credentials
 
-    Given the user goes to the homepage by navigating to "toUrl"
+    Given the user goes to the homepage by navigating to "taUrl"
     Then clicks on the account button
     And enters the email as "toValidEmail"
     And enters the password as "toValidPassword"

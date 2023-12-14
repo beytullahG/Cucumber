@@ -14,7 +14,7 @@ public class TestAutomationStepDefinitions {
 
     @Given("the user goes to the Test Automation homepage")
     public void the_user_goes_to_the_test_automation_homepage() {
-        Driver.getDriver().get(ConfigReader.getProperty("toUrl"));
+        Driver.getDriver().get(ConfigReader.getProperty("taUrl"));
     }
 
     @Then("types phone in the search box and presses ENTER")

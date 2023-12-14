@@ -1,5 +1,5 @@
 Feature: US1008 User tests the buttons on the page
-@wip
+
   Scenario: TC14 User tests that add and delete buttons are functional
 
     Given the user goes to the homepage by navigating to "heroUrl"
