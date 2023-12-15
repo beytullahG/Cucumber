@@ -3,14 +3,28 @@ package stepdefinitions;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Assert;
 import org.openqa.selenium.Keys;
 import pages.TestAutomationPage;
 import utilities.ConfigReader;
 import utilities.Driver;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class TestAutomationStepDefinitions {
     TestAutomationPage testAutomationPage = new TestAutomationPage();
+    Sheet sheet2;
+    int actualStockAmount;
 
     @Given("the user goes to the Test Automation homepage")
     public void the_user_goes_to_the_test_automation_homepage() {
@@ -105,5 +119,95 @@ public class TestAutomationStepDefinitions {
     @And("tests that the user cannot log into the system")
     public void tests_that_login_is_unsuccessful() {
         Assert.assertTrue(testAutomationPage.emailBox.isDisplayed());
+    }
+
+    @When("enters {string} as the email from the list")
+    public void entersAsTheEmailFromTheList(String givenEmail) {
+        testAutomationPage.emailBox.sendKeys(givenEmail);
+    }
+
+    @And("enters {string} as the password from the list")
+    public void entersAsThePasswordFromTheList(String givenPassword) {
+        testAutomationPage.passwordBox.sendKeys(givenPassword);
+    }
+
+    @Then("finds the stock quantity of the product in the {string} row in the Excel")
+    public void findsTheStockQuantityOfTheProductInTheRowInTheExcel(String rowNo) {
+        String filePath = "src/test/resources/stock.xlsx";
+        Workbook workbook;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            workbook = new XSSFWorkbook(fileInputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        sheet2 = workbook.getSheet("Sheet2");
+        String satirdakiUrunIsmi = sheet2.getRow(Integer.parseInt(rowNo) - 1).getCell(0).toString();
+
+        testAutomationPage.searchBox.sendKeys(satirdakiUrunIsmi + Keys.ENTER);
+        actualStockAmount = testAutomationPage.foundProductElementsList.size();
+    }
+
+    @And("tests that the stock quantity in the {string} row is greater than the given stock quantity")
+    public void testsThatTheStockQuantityInTheRowIsGreaterThanTheGivenStockQuantity(String givenRow) {
+        String filePath = "src/test/resources/stock.xlsx";
+        Workbook workbook;
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            workbook = new XSSFWorkbook(fileInputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Sheet sheet2 = workbook.getSheet("Sheet2");
+
+        String minStockAmountStr = sheet2
+                .getRow(Integer.parseInt(givenRow) - 1).getCell(1).toString();
+        System.out.println(minStockAmountStr);
+        int minStockAmount = (int) Double.parseDouble(minStockAmountStr);
+
+        Assert.assertTrue(actualStockAmount >= minStockAmount);
+
+    }
+
+    @Then("lists all the products in the stock excel that have increased, and have stock equal to or greater than the min stock quantity")
+    public void listsAllTheProductsInTheStockExcelThatHaveIncreasedAndHaveStockEqualToOrGreaterThanTheMinStockQuantity() {
+
+        String filePath = "src/test/resources/stock.xlsx";
+        Workbook workbook;
+
+        try {
+            FileInputStream fileInputStream = new FileInputStream(filePath);
+            workbook = new XSSFWorkbook(fileInputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        sheet2 = workbook.getSheet("Sheet2");
+
+        int lastRowNumber = sheet2.getLastRowNum();
+
+        String productName;
+        int minStock;
+        int foundProductCount;
+        List<String> sufficientStockProducts = new ArrayList<>();
+        List<String> insufficientStockProducts = new ArrayList<>();
+
+        for (int i = 1; i <= lastRowNumber; i++) {
+            productName = sheet2.getRow(i).getCell(0).toString();
+            minStock = (int) Double.parseDouble(sheet2.getRow(i).getCell(1).toString());
+
+            testAutomationPage.searchBox.sendKeys(productName + Keys.ENTER);
+            foundProductCount = testAutomationPage.foundProductElementsList.size();
+
+            if (foundProductCount >= minStock) {
+                sufficientStockProducts.add(productName);
+            } else {
+                insufficientStockProducts.add(productName);
+            }
+        }
+
+        System.out.println("Products with sufficient stock: " + sufficientStockProducts);
+        System.out.println("Products with insufficient stock: " + insufficientStockProducts);
+
     }
 }
