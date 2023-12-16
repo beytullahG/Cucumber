@@ -1,6 +1,6 @@
 Feature: US1011 Negative login test with incorrect information in the scenario
 
-
+  @P2
   Scenario Outline: TC17 User should not be able to log in with the provided incorrect credentials in the list
 
     Given the user goes to the homepage by navigating to "taUrl"

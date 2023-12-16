@@ -1,6 +1,6 @@
 Feature: US1009 User performs multiple searches
 
-@wip
+
   Scenario Outline: TC15 User should be able to search for elements in a list
 
     Given the user goes to the homepage by navigating to "taUrl"

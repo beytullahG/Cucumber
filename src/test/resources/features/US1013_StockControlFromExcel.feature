@@ -1,6 +1,6 @@
 Feature:
 
-
+  @P1
   Scenario: TC19 it is possible to create a list of products with given min. stock values in the given stock excel
 
     Given the user goes to the homepage by navigating to "taUrl"
