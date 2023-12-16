@@ -1,5 +1,5 @@
 Feature: US1010 User cannot log in with incorrect information
-
+@P2
   Scenario Outline: TC16 User should not be able to log in with the provided incorrect credentials
 
     Given the user goes to the homepage by navigating to "taUrl"
